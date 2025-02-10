@@ -2,6 +2,17 @@ from PIL import Image
 import os
 import re
 
+def get_language_mode():
+    while True:
+        print("\n請選擇語言模式 / 请选择语言模式:")
+        print("1. 繁體中文 (Traditional Chinese)")
+        print("2. 简体中文 (Simplified Chinese)")
+        choice = input("請輸入數字 (1 或 2): ")
+        
+        if choice in ['1', '2']:
+            return choice
+        print("無效的選擇，請重試 / 无效的选择，请重试\n")
+
 def convert_to_a4(input_path, output_path):
     # A4尺寸 (210mm x 297mm) 換算為像素 (300 DPI)
     a4_width_px = int(210 / 25.4 * 300)
@@ -28,6 +39,9 @@ def convert_to_a4(input_path, output_path):
     # 保存結果
     background.save(output_path)
 
+# 獲取用戶選擇的語言模式
+language_mode = get_language_mode()
+
 # 批量處理資料夾中的所有圖片
 input_folder = "input_images"
 output_folder = "output_images"
@@ -46,8 +60,11 @@ for filename in os.listdir(input_folder):
             page_number = match.group(1)  # 頁碼
             layer_number = match.group(3)  # 圖層
             
-            # 生成新的檔名
-            new_filename = f"{int(page_number)}.{layer_number}.png"
+            # 根據語言模式生成新的檔名
+            if language_mode == '1':  # 繁體中文
+                new_filename = f"{int(page_number)}.{layer_number}.png"
+            else:  # 简体中文
+                new_filename = f"{int(page_number)}.{layer_number}z.png"
             
             input_path = os.path.join(input_folder, filename)
             output_path = os.path.join(output_folder, new_filename)
@@ -56,3 +73,5 @@ for filename in os.listdir(input_folder):
             print(f"處理 {filename} -> {new_filename}")
         else:
             print(f"無法解析檔名: {filename}")
+
+print("\n處理完成 / 处理完成")
