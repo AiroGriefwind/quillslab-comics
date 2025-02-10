@@ -54,11 +54,11 @@ if not os.path.exists(output_folder):
 for filename in os.listdir(input_folder):
     if filename.endswith((".jpg", ".png", ".jpeg")):
         # 使用正則表達式解析檔名
-        match = re.match(r'heip(\d{3})_(\d{4})_圖層-(\d+)', filename)
+        match = re.match(r'heip(\d{3})_(\d{4})_(圖層|图层)-(\d+)', filename)
         
         if match:
             page_number = match.group(1)  # 頁碼
-            layer_number = match.group(3)  # 圖層
+            layer_number = match.group(4)  # 圖層
             
             # 根據語言模式生成新的檔名
             if language_mode == '1':  # 繁體中文
